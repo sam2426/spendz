@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row" style="text-align: left">
+        <div class="col-md-6 offset-md-3 col-sm-10 sm-offset-1" >
+                <h2>Login Form</h2>
+            <form #logInForm="ngForm" (ngSubmit)="logInFunction()" style="max-width: 600px">
+
+                <div class="form-group">
+                    <input type="email" name="email" [(ngModel)]="email" #mailId="ngModel" class="form-control" placeholder="Email" required>
+                </div>
+                <div [hidden]="mailId.valid||mailId.pristine" class="alert alert-danger h6">
+                    Email Required
+                </div>
+
+                <div class="form-group">
+                    <input type="password" #pass="ngModel" name="password" [(ngModel)]="password" class="form-control" placeholder="Enter Password"
+                        required>
+                </div>
+                <div [hidden]="pass.valid||pass.pristine" class="alert alert-danger  h6">
+                    Enter Password
+                </div>
+
+                <button type="submit" class="btn btn-primary" [disabled]="!logInForm.form.valid">LogIn</button>
+                <br> <br>
+                
+            </form>
+            <button class="btn btn-primary" (click)="forgetPassword()">Forget Password</button>
+        </div>
+    </div>
+</div>

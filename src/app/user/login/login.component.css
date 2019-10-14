@@ -1,0 +1,11 @@
+.ng-valid[required], .ng-valid.required {
+    border-left:5px solid #42A948;
+}
+
+.ng-invalid:not(form){
+    border-left:5px solid #A94442;
+}
+
+h2 {
+    text-shadow: 2px 2px 3px  rgb(75, 73, 68);
+  }
