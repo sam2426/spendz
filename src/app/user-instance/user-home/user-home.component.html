@@ -1,1 +1,60 @@
-<p>user-home works!</p>
+
+<div class="container">
+    <div class="row d-flex" *ngIf="userData.hasOwnProperty('profilePic')">
+        <div class="col-md-4 col-sm-12" style="padding-bottom: 3em">
+            <div class="align-self-center" *ngIf="userData.profilePic==''">
+                <img src="../../../assets/pics/small_profile.png" class="profile-pic">
+            </div>
+            <div class="align-self-center" *ngIf="userData.profilePic!=''">
+                <img src="{{userData.profilePic}}" class="profile-pic">
+            </div>
+        </div>
+        <div class="col-md-8 col-sm-12">
+            <div class="row justify-content-center justify-content-md-start">
+                <div class="text-center">Name : </div>
+                <div>{{userData.firstName}} {{userData.lastName}}</div>
+            </div>
+            <div class="row justify-content-center justify-content-md-start">
+                <div>Email : </div>
+                <div>{{userData.email}}</div>
+            </div>
+            <div class="row justify-content-center justify-content-md-start">
+                <div>Phone Number : </div>
+                <div>{{userData.mobileNumber}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="userList.length>0 && loggedInId==userId">
+    <div class="row">
+        <div class="col-8 offset-2">
+            <div *ngFor="let friend of userList">
+                <div class="row box">
+                    <div class="col-md-2 col-sm-12" *ngIf="friend.profilePic==''">
+                        <img src="../../../assets/pics/small_profile.png" class="user" style="vertical-align: middle;">
+                    </div>
+                    <div class="col-md-2 col-sm-12" *ngIf="friend.profilePic!=''">
+                        <img src="{{friend.profilePic}}" class="user" style="vertical-align: middle;">
+                    </div>
+                    <div class="col-md-6 col-sm-12 ">
+                        <span></span><a [routerLink]="['/user-home',friend.userId]" class="marker-name">{{friend.firstName}} {{friend.lastName}}</a>
+                    </div>
+
+                    <div class="col-md-4" *ngIf="friend.isFriend">
+                        <button class="btn btn-warning btn-sm" (click)='unfriend(friend.userId)'>Unfriend</button>
+                    </div>
+        
+                    <div class="col-md-4" *ngIf="!friend.isFriend && friend.requestReceived" >
+                        <button class="btn btn-danger btn-sm marker-btn"  (click)='unfriend(friend.userId)'>Decline Request</button>
+                    </div>
+        
+                    <div class="col-md-4" *ngIf="!friend.isFriend && friend.requestSent">
+                        <button class="btn btn-success btn-sm marker-btn" (click)='acceptReq(friend.userId)'>Accept Request</button>
+                        <button class="btn btn-danger btn-sm marker-btn" (click)='unfriend(friend.userId)'>Decline Request</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

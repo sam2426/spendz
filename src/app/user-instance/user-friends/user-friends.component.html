@@ -1,1 +1,23 @@
-<p>user-friends works!</p>
+<div class="container" *ngIf="userList.length>0">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div *ngFor="let friend of userList">
+                <div class="row box">
+                    <div class="col-md-2 col-sm-12" *ngIf="friend.profilePic==''">
+                        <img src="../../../assets/pics/small_profile.png" class="user">
+                    </div>
+                    <div class="col-md-2 col-sm-12" *ngIf="friend.profilePic!=''">
+                        <img src="{{friend.profilePic}}" class="user">
+                    </div>
+                    <div class="col-md-6 col-sm-12 marker-name">
+                        <span></span><a [routerLink]="['/user-home',friend.userId]">{{friend.firstName}} {{friend.lastName}}</a>
+                    </div>
+                    <div class="col-md-4 col-sm-12 marker-btn">
+                        <button type="button" class="btn btn-sm btn-primary" style="margin: 5px"
+                            (click)="addFriend(friend.userId)">Add Friend</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

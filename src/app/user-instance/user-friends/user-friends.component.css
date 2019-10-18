@@ -1,0 +1,36 @@
+.user {
+    display: inline-block;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    border:2px black solid;
+    object-fit: cover;
+    padding:2px;
+    margin-top: 4px;
+    box-shadow: 2px 3px 4px  rgb(75, 73, 68);
+  }
+
+   .box{
+      border: 3px blue double;
+      margin: 3px;
+  }
+ 
+ .marker-name{
+     text-align: center;
+ }
+
+  @media screen and (min-width:767px){
+
+    span {
+        height: 100%;
+        vertical-align: middle;
+        display: inline-block; 
+    }
+    a {
+        vertical-align: middle;
+        display: inline-block; 
+    }        
+    .marker-btn{
+          margin: 5px 0px;
+      }
+  }

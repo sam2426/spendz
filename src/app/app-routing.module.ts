@@ -12,13 +12,19 @@ const routes: Routes = [];
 @NgModule({
   declarations: [
     //any component to be added declare here.
+    //since in app-routing module, there is only routes and no modules to declared, we can remove the array.
   ],
   imports: [
     HomeModule,
-    SharedModule,
     UserModule,
     UserInstanceModule,
+    SharedModule,
     RouterModule.forRoot(routes)],
+    /*
+    *The order of the routes in the configuration matters and this is by design. 
+    *The router uses a first-match wins strategy when matching routes
+    *Above if SharedModule is declared first, the notFoundComponent will always precede and show up first.
+    * */
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
