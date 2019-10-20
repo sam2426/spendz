@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   public email: any;
   public password: any;
 
-  public isLoggedIn = false
+  public isLoggedIn:boolean = false
   role = ''
   userId = ''
 

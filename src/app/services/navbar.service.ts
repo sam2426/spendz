@@ -20,8 +20,8 @@ export class NavbarService {
     else {
       this.isLoggedIn.next(true);
       this.addItem({ text: `${this.cookies.get('firstName')}`, path: `user-home/${this.cookies.get('userId')}` });
-      this.addItem({ text: 'My ToDos', path: 'user-todos' });
-      this.addItem({ text: 'Collaborate', path: 'user-friends-todos' });
+      this.addItem({ text: 'My Expenses', path: `user-spendz/${this.cookies.get('userId')}` });
+      // this.addItem({ text: 'Collaborate', path: 'user-friends-todos' });
       this.addItem({ text: 'Friends', path: 'user-friends' });
     }
   }
@@ -50,8 +50,8 @@ export class NavbarService {
 
     if (role === 'user') {
       this.addItem({ text: `${this.cookies.get('firstName')}`, path: `user-home/${this.cookies.get('userId')}` });
-      this.addItem({ text: 'My ToDos', path: 'user-todos' });
-      this.addItem({ text: 'Collaborate', path: 'user-friends-todos' });
+      this.addItem({ text: 'My Expenses', path: `user-spendz/${this.cookies.get('userId')}` });
+      // this.addItem({ text: 'Collaborate', path: 'user-friends-todos' });
       this.addItem({ text: 'Friends', path: 'user-friends' });
       // this.addItem({ text: 'Logout', path: 'user-logout' });
     } else if (role === 'admin') {

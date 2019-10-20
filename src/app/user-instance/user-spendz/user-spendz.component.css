@@ -1,0 +1,23 @@
+.backcolor{
+    background-color: rgb(8, 26, 184);
+    height: 100%;
+    width: 100%;
+}
+
+ul{
+    padding-left: 10px;
+}
+
+li{
+    text-decoration: none;
+    list-style: none;
+    text-transform: capitalize;
+    text-align: left;
+    padding-left: 0;
+    margin-left:0 ;
+}
+
+li:hover{
+    background-color: chocolate;
+    color: cornsilk;
+}
