@@ -115,9 +115,9 @@ export class SignupComponent implements OnInit {
      }else if(!this.gender){
        this.toastr.warning('select gender');
       }else{
-      //  uploadImage()
-      //  .then(signUp)
-      signUp()
+       uploadImage()
+       .then(signUp)
+      // signUp()
        .then((resolve)=>{
          console.log(resolve);
          this.toastr.success('SignUp Successfully');

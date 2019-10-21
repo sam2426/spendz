@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppService } from '../../services/app.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-forget-password',
@@ -13,6 +14,7 @@ export class ForgetPasswordComponent implements OnInit {
   public email:any;
   public otp:any;
   public password:any;
+  public showLoader:boolean=false;
 
   constructor(
     public appService: AppService,
@@ -27,8 +29,10 @@ export class ForgetPasswordComponent implements OnInit {
     let data={
       email:this.email
     }
+    this.showLoader=true;
 
     this.appService.forgetPassword(data).subscribe((apiResponse)=>{
+      this.showLoader=false;
       if(apiResponse.status===200){
         this.toastr.success(apiResponse.message);
       }
@@ -42,7 +46,7 @@ export class ForgetPasswordComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  public updatePasswordFunction:any=()=>{
+  public updatePasswordFunction:any=(resetPassForm:NgForm)=>{
     let data={
       email:this.email,
       otp:this.otp,
@@ -53,10 +57,11 @@ export class ForgetPasswordComponent implements OnInit {
       console.log(apiResponse);
       if(apiResponse.status===200){
         this.toastr.success(apiResponse.message);
+        this.goToLogin();
       }
       else{
         this.toastr.error(apiResponse.message);
-        this.goToLogin();
+        resetPassForm.reset();
       }
     })
   }
