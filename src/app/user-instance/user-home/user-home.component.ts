@@ -41,17 +41,19 @@ export class UserHomeComponent implements OnInit {
       console.log('call friend list');
       this.getFriendList(this.userId);
     })
-    this.receiveFriendRequest();
+    this.receiveRequest(this.loggedInId);
+    this.deleteRequest(this.loggedInId);
     this.getFriendList(this.loggedInId);
-    this.getAllUsersList();
+    this.getAllUsersList(this.loggedInId);
   }
 
-  public receiveFriendRequest=()=>{
-    console.log("receiveFriendRequest activated for ",this.loggedInId)
-    this.friendSocketService.receiveFriendRequest(this.loggedInId).subscribe((data)=>{
+  public receiveRequest=(userId)=>{
+    console.log("receiveFriendRequest activated for ",userId)
+    this.friendSocketService.receiveFriendRequest(userId).subscribe((data)=>{
       this.toastr.success('Friend Request Received');
       this.getFriendList(this.loggedInId);
-      this.getAllUsersList();
+      // this.getAllUsersList();
+      this.getAllUsersList(this.loggedInId);
     })
   }
 
@@ -72,9 +74,9 @@ export class UserHomeComponent implements OnInit {
     this.friendSocketService.getfriendList(userId);
   }
 
-  public getAllUsersList:any=()=>{
+  public getAllUsersList:any=(userId)=>{
     console.log("socket gettersssss called");
-    this.friendSocketService.friendList().subscribe((apiResponse)=>{
+    this.friendSocketService.friendList(userId).subscribe((apiResponse)=>{
       if(apiResponse.status===200){
         console.log("hijjbill",apiResponse.data);
         this.userList = this.parseFriendList(apiResponse.data)
@@ -120,29 +122,65 @@ export class UserHomeComponent implements OnInit {
       return newArr;
   }
 
-  public acceptReq=(friendId)=>{
-    this.appService.acceptReq(this.userId,friendId).subscribe((apiResponse) => {
-      if (apiResponse.status === 200) {
-        this.getFriendList(this.userId);
-        this.toastr.success('Request Accepted');
-      }
-      else {
-        this.toastr.warning('Error');
-      }
+
+  public unfriend=(friendId)=>{                            //it wil fire the socket when button is clicked.
+    
+    this.friendSocketService.deleteFriendRequest(this.loggedInId,friendId);
+    // .subscribe((apiResponse) => {
+    //   if (apiResponse.status === 200) {
+    //     this.getFriendList(this.userId);
+    //     this.toastr.success('Request Processed');
+    //   }
+    //   else {
+    //     this.toastr.warning('Error');
+    //   }
+    // })
+  }
+
+  public deleteRequest=(userId)=>{                            //it wil update the list when someone deletes an sent request 
+    console.log("deleteActionRequest activated for ",userId)
+    this.friendSocketService.deleteRequestNotify(userId).subscribe((data)=>{
+      this.toastr.success('Friend Request Deleted');
+      this.getFriendList(this.loggedInId);
+      this.getAllUsersList(this.loggedInId);
     })
   }
 
-  public unfriend=(friendId)=>{
-    this.appService.deleteReq(this.userId,friendId).subscribe((apiResponse) => {
-      if (apiResponse.status === 200) {
-        this.getFriendList(this.userId);
-        this.toastr.success('Request Processed');
-      }
-      else {
-        this.toastr.warning('Error');
-      }
+  public acceptReq=(friendId)=>{                                //it wil fire the delete socket when button is clicked.
+
+    this.friendSocketService.acceptFriendRequest(this.loggedInId,friendId);
+    // this.appService.acceptReq(this.userId,friendId).subscribe((apiResponse) => {
+    //   if (apiResponse.status === 200) {
+    //     this.getFriendList(this.userId);
+    //     this.toastr.success('Request Accepted');
+    //   }
+    //   else {
+    //     this.toastr.warning('Error');
+    //   }
+    // })
+  }
+
+
+  public acceptRequest=(userId)=>{                            //it wil update the list when someone deletes an sent request 
+    console.log("acceptActionRequest activated for ",userId)
+    this.friendSocketService.acceptRequestNotify(userId).subscribe((data)=>{
+      this.toastr.success('Friend Request Deleted');
+      this.getFriendList(this.loggedInId);
+      this.getAllUsersList(this.loggedInId);
     })
   }
+
+  // public unfriend=(friendId)=>{
+  //   this.appService.deleteReq(this.userId,friendId).subscribe((apiResponse) => {
+  //     if (apiResponse.status === 200) {
+  //       this.getFriendList(this.userId);
+  //       this.toastr.success('Request Processed');
+  //     }
+  //     else {
+  //       this.toastr.warning('Error');
+  //     }
+  //   })
+  // }
 
 
 

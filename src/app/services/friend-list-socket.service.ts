@@ -24,15 +24,32 @@ export class FriendListSocketService {
     this.socket.emit('getUsers',userId);
   }
 
-  public userList = () => {
+  public userList = (userId) => {
     return Observable.create((observer)=>{
-      this.socket.on('UsersListSuccess',(data)=>{
+      let id='UsersListSuccess'+userId;
+      this.socket.on(id,(data)=>{
         console.log("from userList socket ",data);
         observer.next(data);
       }); // end of socket
     }) // end of observable
   
   } // end getUsersList not friend
+
+  public getfriendList=(userId)=>{
+    this.socket.emit('getFriends',userId);
+  }
+
+  public friendList = (userId) => {
+    let id='FriendListSuccess'+userId;
+    return Observable.create((observer)=>{
+      this.socket.on(id,(data)=>{
+        console.log("from friendList socket ",data);
+        observer.next(data);
+      }); // end of socket
+    }) // end of observable
+  
+  } // end getUsersList not friend
+
 
   public addFriendRequest=(userId,friendId)=>{
     let data={
@@ -42,24 +59,11 @@ export class FriendListSocketService {
     this.socket.emit('sendFriendRequest', data);
   }
 
-  public getfriendList=(userId)=>{
-    this.socket.emit('getFriends',userId);
-  }
-
-  public friendList = () => {
-    return Observable.create((observer)=>{
-      this.socket.on('FriendListSuccess',(data)=>{
-        console.log("from friendList socket ",data);
-        observer.next(data);
-      }); // end of socket
-    }) // end of observable
-  
-  } // end getUsersList not friend
-
   //listening to ownID for notifications
   public receiveFriendRequest=(userId)=>{
+    let id='ReceiveRequest'+userId;
     return Observable.create((observer)=>{
-      this.socket.on(userId,(data)=>{
+      this.socket.on(id,(data)=>{
         console.log("from friendList receiver socket ",data);
         observer.next(data);
       })
@@ -67,7 +71,47 @@ export class FriendListSocketService {
   }
 
 
+  //fired when delete button is clicked, in the userHome page
+  public deleteFriendRequest=(userId,friendId)=>{ 
+    let data={
+      senderId:userId,
+      receiverId:friendId
+    }
+    this.socket.emit('deleteFriendRequest', data);
+  }
 
+  //called when delete request is processed. it has to update both userHomePage and userFriendsPage.
+  public deleteRequestNotify=(userId)=>{
+    let id='DeleteRequest'+userId;
+    return Observable.create((observer)=>{
+      this.socket.on(id,(data)=>{
+        console.log("from friendList receiver socket ",data);
+        observer.next(data);
+      })
+    })
+  }
+
+  //fired when accept button is clicked, in the userHome page
+  public acceptFriendRequest=(userId,friendId)=>{ 
+    let data={
+      senderId:userId,
+      receiverId:friendId
+    }
+    this.socket.emit('acceptFriendRequest', data);
+  }
+
+  //called when delete request is processed. it has to update both userHomePage and userFriendsPage.
+  public acceptRequestNotify=(userId)=>{
+    let id='AcceptRequest'+userId;
+    return Observable.create((observer)=>{
+      this.socket.on(id,(data)=>{
+        console.log("from friendList receiver socket ",data);
+        observer.next(data);
+      })
+    })
+  }
+
+}
 
 
 
@@ -119,7 +163,7 @@ export class FriendListSocketService {
   //     }); // end of socket
   //   }) // end of observable
   
-  } // end getfriendList (friends)
+   // end getfriendList (friends)
 
 
   

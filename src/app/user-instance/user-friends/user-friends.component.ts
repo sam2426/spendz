@@ -27,7 +27,9 @@ export class UserFriendsComponent implements OnInit {
   ngOnInit() {
     this.userId=this.cookies.get('userId');
     this.getUserList(this.userId);
-    this.getAllUsersList();
+    this.getAllUsersList(this.userId);
+    this.receiveRequest(this.userId);
+    this.deleteRequest(this.userId);
   }
 
   public getUserList:any=(userId)=>{
@@ -35,9 +37,9 @@ export class UserFriendsComponent implements OnInit {
     this.friendSocketService.getUserList(userId);
   }
 
-  public getAllUsersList:any=()=>{
+  public getAllUsersList:any=(userId)=>{
     console.log("socket getter called");
-    this.friendSocketService.userList().subscribe((apiResponse)=>{
+    this.friendSocketService.userList(userId).subscribe((apiResponse)=>{
       if(apiResponse.status===200){
         // console.log("hi",apiResponse.data);
         this.userList=[];
@@ -60,57 +62,65 @@ export class UserFriendsComponent implements OnInit {
 
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  public adder(){
-
-    this.getUserList(this.userId);
-    this.getAllUsersList();
+  public receiveRequest=(userId)=>{                             //it will update the list when someone sends request in real time
+    console.log("receiveFriendRequest activated for ",userId)
+    this.friendSocketService.receiveFriendRequest(userId).subscribe((data)=>{
+      this.toastr.success('Friend Request Received');
+      this.getUserList(this.userId);
+      this.getAllUsersList(this.userId);
+    })
   }
 
-  public remover(){
-    
-    this.userList=[];
-    // console.log("hey ihbfksndklfhkj")
+  public deleteRequest=(userId)=>{                            //it wil update the list when someone deletes an sent request 
+    console.log("deleteActionRequest activated for ",userId)
+    this.friendSocketService.deleteRequestNotify(userId).subscribe((data)=>{
+      // this.toastr.success('Friend Request Received');
+      this.getUserList(this.userId);
+      this.getAllUsersList(this.userId);
+    })
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
    // public userHome(){
   //   this.router.navigate(['/user-home',this.userId]);
