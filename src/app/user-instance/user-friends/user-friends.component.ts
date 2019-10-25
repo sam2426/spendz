@@ -26,43 +26,110 @@ export class UserFriendsComponent implements OnInit {
 
   ngOnInit() {
     this.userId=this.cookies.get('userId');
-    this.getAllUsersList(this.userId);
+    this.getUserList(this.userId);
+    this.getAllUsersList();
   }
 
-  public userHome(){
-    this.router.navigate(['/user-home',this.userId]);
+  public getUserList:any=(userId)=>{
+    console.log("socket setter called");
+    this.friendSocketService.getUserList(userId);
   }
 
-  public addFriend(friendId){
-    // console.log(userId);
-    this.appService.addFriend(this.userId, friendId).subscribe((apiResponse)=>{
+  public getAllUsersList:any=()=>{
+    console.log("socket getter called");
+    this.friendSocketService.userList().subscribe((apiResponse)=>{
       if(apiResponse.status===200){
-        this.consoler(this.userId);
-        this.getAllUsersList(this.userId);
-        this.toastr.success(apiResponse.message);
-        console.log(apiResponse);
-      }
-      else{
-        this.toastr.error('Unable to add Friend');
-        console.log(apiResponse);
-      }
-    })
-  }
-
-  public consoler=(userId)=>{
-    console.log("consoler"+userId);
-  }
-
-  public getAllUsersList:any=(userId)=>{
-    console.log("socket called");
-    this.friendSocketService.userList(userId).subscribe((apiResponse)=>{
-      if(apiResponse.status===200){
-        console.log("hi",apiResponse.data);
+        // console.log("hi",apiResponse.data);
         this.userList=[];
         this.userList=apiResponse.data;
-      }      
+      }else if(apiResponse.status==300){
+        this.toastr.error('No more users to show')
+        this.userList=[];
+      } else{
+        this.toastr.error('some error occured');
+      }  
       console.log(this.userList);
     })
   }
+
+  public addFriend(friendId){
+    
+    this.friendSocketService.addFriendRequest(this.userId, friendId);
+    this.getUserList(this.userId);
+    this.getAllUsersList();
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  public adder(){
+
+    this.getUserList(this.userId);
+    this.getAllUsersList();
+  }
+
+  public remover(){
+    
+    this.userList=[];
+    // console.log("hey ihbfksndklfhkj")
+  }
+
+   // public userHome(){
+  //   this.router.navigate(['/user-home',this.userId]);
+  // }
+
+  // public addFriend(friendId){
+  //     this.friendSocketService.addFriendRequest(this.userId, friendId).subscribe((apiResponse)=>{
+  //     console.log(apiResponse.status);
+  //   })
+  // }
+
+  // public receiveFriend(){
+  //   this.friendSocketService.receiveFriendRequest(this.userId).subscribe((apiResponse)=>{
+  //     console.log(apiResponse.status);
+  //   })
+  // }
+
+  // public consoler=(userId)=>{
+  //   console.log("consoler"+userId);
+  // }
 
 }

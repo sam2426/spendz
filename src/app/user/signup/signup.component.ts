@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AppService } from './../../services/app.service';
 import { Router } from '@angular/router';
+import { IDropdownSettings } from 'ng-multiselect-dropdown'; //https://www.npmjs.com/package/ng-multiselect-dropdown
+
 
 class ImageSnippet{
   constructor(
@@ -26,6 +28,13 @@ export class SignupComponent implements OnInit {
   public picUrl:any='';
   public showLoader:boolean=false;
 
+  public countries:any;
+  public countryCodes:any;
+  public countryListSettings:IDropdownSettings = {};
+  public countryCodeListSettings:IDropdownSettings = {};
+  CountryList: any;
+  countryCodeList: any;
+
   constructor(
     public toastr:ToastrService,
     public appService:AppService,
@@ -33,6 +42,51 @@ export class SignupComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getCountries();
+    this.getCountryCodes();
+
+  }
+
+  public getCountries(){
+    this.appService.getCountries().subscribe(data=>{
+      this.countries=data;
+      console.log(this.countries);
+    })
+  }
+
+  public getCountryCodes(){
+    this.appService.getCountryCodes().subscribe(data=>{
+      this.countryCodes=data;
+      console.log(this.countryCodes);
+    })
+  }
+
+  public loadCountry(){
+
+    console.log("grp loader",this.countries);
+  
+    this.CountryList=this.countries;
+    this.countryListSettings = {
+      singleSelection: true,
+      idField: 'userId',
+      textField: 'firstName',
+      allowSearchFilter: true,
+      maxHeight:100,
+    };
+  }
+
+  public loadUsers(){
+
+    console.log("grp loader",this.countryCodes);
+  
+    this.countryCodeList=this.countryCodes;
+    this.countryCodeListSettings = {
+      singleSelection: true,
+      idField: 'userId',
+      textField: 'firstName',
+      allowSearchFilter: true,
+      maxHeight:100,
+    };
   }
 
   public imageTarget:String='';
@@ -117,7 +171,6 @@ export class SignupComponent implements OnInit {
       }else{
        uploadImage()
        .then(signUp)
-      // signUp()
        .then((resolve)=>{
          console.log(resolve);
          this.toastr.success('SignUp Successfully');

@@ -12,6 +12,14 @@ export class AppService {
 
   constructor(public http: HttpClient, public cookies:CookieService) { }
 
+  public getCountries(){
+    return this.http.get('./../../assets/json_data/country.json');
+  }
+
+  public getCountryCodes(){
+    return this.http.get('./../../assets/json_data/countryCode.json');
+  }
+
   public getUserInfoFromLocalStorage=()=>{
     return JSON.parse(localStorage.getItem('userInfo'));
   }

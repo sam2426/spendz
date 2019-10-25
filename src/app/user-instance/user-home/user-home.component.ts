@@ -33,13 +33,25 @@ export class UserHomeComponent implements OnInit {
     this.loggedInId = this.cookies.get('userId');
     this.userInfo = this.appService.getUserInfoFromLocalStorage();
     //getting the user id from the route, here snapshot method didn't work so used observable to get the 
-    //refreshed user id dynamically. snapshot is kinf of static
+    //refreshed user id dynamically. snapshot is kind of static
     this._route.paramMap.subscribe((params) => {
       this.userId = params.get('userId');
       console.log('user home called'+params.get('userId'));
       this.getProfile(this.userId);
       console.log('call friend list');
       this.getFriendList(this.userId);
+    })
+    this.receiveFriendRequest();
+    this.getFriendList(this.loggedInId);
+    this.getAllUsersList();
+  }
+
+  public receiveFriendRequest=()=>{
+    console.log("receiveFriendRequest activated for ",this.loggedInId)
+    this.friendSocketService.receiveFriendRequest(this.loggedInId).subscribe((data)=>{
+      this.toastr.success('Friend Request Received');
+      this.getFriendList(this.loggedInId);
+      this.getAllUsersList();
     })
   }
 
@@ -54,14 +66,24 @@ export class UserHomeComponent implements OnInit {
     })
   }
 
-  public getFriendList: any = (userId) => {
-    this.friendSocketService.friendList(userId).subscribe((apiResponse) => {
-      if (apiResponse.status === 200) {
-        console.log(apiResponse.data);
+  public getFriendList:any=(userId)=>{
+    console.log(userId);
+    console.log("socket setterssss called");
+    this.friendSocketService.getfriendList(userId);
+  }
+
+  public getAllUsersList:any=()=>{
+    console.log("socket gettersssss called");
+    this.friendSocketService.friendList().subscribe((apiResponse)=>{
+      if(apiResponse.status===200){
+        console.log("hijjbill",apiResponse.data);
         this.userList = this.parseFriendList(apiResponse.data)
+      }else if(apiResponse.status===300){
+        this.userList=[];
+        this.toastr.error('No more users to show');
       }
       else {
-        this.toastr.warning('No friends to list');
+        this.toastr.error('some error occured');
       }
       console.log(this.userList);
     })
@@ -121,5 +143,20 @@ export class UserHomeComponent implements OnInit {
       }
     })
   }
+
+
+
+  // public getFriendList: any = (userId) => {
+  //   this.friendSocketService.friendList().subscribe((apiResponse) => {
+  //     if (apiResponse.status === 200) {
+  //       console.log(apiResponse.data);
+  //       this.userList = this.parseFriendList(apiResponse.data)
+  //     }
+  //     else {
+  //       this.toastr.warning('No friends to list');
+  //     }
+  //     console.log(this.userList);
+  //   })
+  // }
 
 }

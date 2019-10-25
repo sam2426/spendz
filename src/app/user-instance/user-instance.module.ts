@@ -5,6 +5,10 @@ import { UserFriendsComponent } from './user-friends/user-friends.component';
 import { UserLogoutComponent } from './user-logout/user-logout.component';
 import { UserSpendzComponent } from './user-spendz/user-spendz.component';
 import { RouterModule, Routes } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from './../shared/shared.module'
 
 const routes: Routes = [
   {path:'user-home/:userId', component:UserHomeComponent},
@@ -20,7 +24,12 @@ const routes: Routes = [
   declarations: [UserHomeComponent, UserFriendsComponent, UserLogoutComponent, UserSpendzComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule,
+    RouterModule.forChild(routes),
+    NgMultiSelectDropDownModule.forRoot(),
+    SharedModule,
   ]
 })
 export class UserInstanceModule { }

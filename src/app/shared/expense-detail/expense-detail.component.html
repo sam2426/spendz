@@ -1,0 +1,51 @@
+
+<!-- <div class="card">
+    <div class="card-header" id="'cardHeader.head'">
+        <h2 class="mb-0">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#'cardHeader.tail'"
+                aria-expanded="false" aria-controls="'cardHeader.tail'" (click)="ac()">
+                {{cardHeader.tail}}
+            </button>
+        </h2>
+
+    </div>
+    <div id="'cardHeader.tail'" class="collapse" aria-labelledby="'cardHeader.head'" data-parent="'accordionId'">
+        <div class="card-body">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti repudiandae soluta excepturi eius,
+            ducimus debitis maiores magni assumenda, autem hic dolor recusandae necessitatibus adipisci tempora culpa.
+        </div>
+    </div>
+</div> -->
+
+<!-- <div class="card">
+        <div class="card-header" id="headingtwo">
+            <h2 class="mb-0">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                    Collapsible Group Item #2
+                </button>
+            </h2>
+                    
+        </div>
+        <div id="collapse2" class="collapse" aria-labelledby="headingtwo" data-parent="#accordian2">
+            <div class="card-body">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti repudiandae soluta excepturi eius, ducimus debitis maiores magni assumenda, autem hic dolor recusandae necessitatibus adipisci tempora culpa.
+            </div>
+        </div>
+    </div> -->
+
+    <div class="card mb-1">
+            <div class="card-header">
+                    <h5>
+                        <a (click)="toggleHidden()">
+                            {{cardHeader.head}}
+                        </a>
+                    </h5>
+        
+            </div>
+            <!-- <div> -->
+                <div class="card-body" [hidden]='isHidden'>
+                    <!-- <div class="card-body" [style.hidden]="false?true:false">  -->
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti repudiandae soluta excepturi eius.
+                </div>
+            <!-- </div> -->
+        </div>

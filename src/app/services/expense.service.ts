@@ -16,4 +16,8 @@ export class ExpenseService {
     //passing the id for which data is needed.
     return this.http.get(`${this.url}/expenses/${userId}/getGroup`);
   }
+
+  public getGroupDetails(groupId):Observable<any>{
+    return this.http.get(`${this.url}/expenses/${groupId}/getExpense`);
+  }
 }

@@ -1,6 +1,14 @@
+<div class="container" *ngIf="userList.length==0">
+    <h3>No More Users in the Portal</h3>
+</div>
+
 <div class="container" *ngIf="userList.length>0">
+        <div>
+            <h3>Send Friend Requests here...</h3>
+        </div>
     <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-8 offset-2">
+            
             <div *ngFor="let friend of userList">
                 <div class="row box">
                     <div class="col-md-2 col-sm-12" *ngIf="friend.profilePic==''">
