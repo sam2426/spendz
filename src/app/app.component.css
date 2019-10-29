@@ -39,7 +39,7 @@ body{
     height: 3.8rem;            /* Footer height */
   }
   
-  .spinner{
+  /* .spinner{
     border: 11px solid rgb(131, 129, 129);
     border-top: 11px solid #007bff;
     border-radius: 50%;
@@ -61,4 +61,4 @@ body{
     100%{
       transform: rotate(360deg);
     }
-  }
+  } */

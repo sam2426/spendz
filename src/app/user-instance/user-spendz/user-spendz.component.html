@@ -11,7 +11,7 @@
                     </div>
                 </ul>
                 <button data-target="#addGroupModal" data-toggle="modal"
-                    class="btn btn-info btn-sm customButton d-block" (click)="loadUsers()">
+                    class="btn btn-info btn-sm customButton d-block" (click)="loadFriends()">
                     Add Group
                 </button>
             </div>
@@ -22,7 +22,7 @@
                 <ul class="backcolor">
                     <li>
                         <button data-target="#addExpenseModal" data-toggle="modal"
-                            class="btn btn-info btn-sm customButton d-block" (click)="loadUsers()">
+                            class="btn btn-info btn-sm customButton d-block" (click)="loadGroupParticipants()">
                             Add Expense
                         </button>
                     </li>
@@ -79,8 +79,8 @@
                     <h4>Contributors</h4>
                 </div>
                 <ul class="backcolor">
-                    <div *ngFor="let user of contributors">
-                        <li class="cursorPointer">{{user.firstName+' '+user.lastName}}</li>
+                    <div *ngFor="let user of grpParticipants">
+                        <li class="cursorPointer">{{user.userName}}</li>
                     </div>
                 </ul>
             </div>
@@ -104,15 +104,16 @@
                                 class="form-control" placeholder="Enter Group Name">
                         </div>
                         <div class="form-group">
-                            <ng-multiselect-dropdown [placeholder]="'Select Contributors'" [data]="dropdownList"
-                                [(ngModel)]="selectedItems" [settings]="dropdownSettings"
+                            <ng-multiselect-dropdown [placeholder]="'Select Contributors'" [data]="friendDropdownList"
+                                [(ngModel)]="friendSelectedItems" [settings]="friendDropdownSettings"
                                 [ngModelOptions]="{standalone: true}">
                             </ng-multiselect-dropdown>
+                            <small>You will be default participant in the group!!</small>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary btn-sm" (click)="addHeader()">Add</button>
+                    <button class="btn btn-primary btn-sm" data-dismiss="modal" (click)="addGroup()">Add</button>
                     <button class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -130,14 +131,15 @@
                     <button class="close" data-dismiss="modal" style="outline: none;">&times;</button>
                 </div>
                 <div class="modal-body">
+                    <!-- <form #expenseForm="ngForm" (ngSubmit)="addExpense()" > -->
                     <form>
                         <div class="form-group">
                             <input type="text" [(ngModel)]="newExpenseName" [ngModelOptions]="{standalone: true}"
                                 class="form-control" placeholder="Enter Expense Name">
                         </div>
                         <div class="form-group">
-                            <ng-multiselect-dropdown [placeholder]="'Select Participants'" [data]="dropdownList"
-                                [(ngModel)]="selectedItems" [settings]="dropdownSettings"
+                            <ng-multiselect-dropdown [placeholder]="'Select Participants'" [data]="groupExpenseDropdownList"
+                                [(ngModel)]="groupExpenseSelectedItems" [settings]="groupExpenseDropdownSettings"
                                 [ngModelOptions]="{standalone: true}">
                             </ng-multiselect-dropdown>
                         </div>
@@ -153,18 +155,30 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <div class="input-group-prepend">
+                                    <!-- <span  class="input-group-text bg-primary text-white">&#8377;</span> -->
+                                    <span class="input-group-text bg-primary text-white"><i class="fas fa-user"></i></span>
+                                </div>
+                                <select name="expOwner" [(ngModel)]="expenseOwner" class="form-control" required>
+                                    <option [ngValue]="undefined" disabled selected>Paid by...</option>
+                                    <option *ngFor="let data of grpParticipants" [value]="data.userId" >{{data.userName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
                                     <button #buttonEl class="btn btn-primary" (click)="d.toggle()" type="button">
                                         <i class="far fa-calendar-alt"></i>
                                     </button>
                                 </div>
                                 <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="expenseDate"
-                                    ngbDatepicker #d="ngbDatepicker" placement="right" [positionTarget]="buttonEl">
+                                    ngbDatepicker #d="ngbDatepicker" placement="right" [positionTarget]="buttonEl" >
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary btn-sm" (click)="addExpense()">Save</button>
+                    <button class="btn btn-primary btn-sm" (click)="addExpense()" >Save</button>
                     <button class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
                 </div>
             </div>

@@ -30,6 +30,11 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!(this.cookie.get('authToken')=='')) {
+      this.router.navigate(['/user-home/', this.cookie.get('userId')]);
+    }else{
+      this.router.navigate(['/login']);
+    }
   }
 
   public goToUser() {

@@ -6,8 +6,14 @@ import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
 import { UserModule } from './user/user.module';
 import { UserInstanceModule } from './user-instance/user-instance.module';
+import { NotFoundComponent } from './shared/not-found/not-found.component';
 
-const routes: Routes = [];
+
+const routes: Routes = [
+  {path:'**', component:NotFoundComponent}
+];
+
+//sequence of adding route is important, if we put '**' i.e. all in first, all the routes will go to notFoundComponent. so we are putting it in last, after all the routes in homemodule, usermodule etc are loaded the routermodule.forRoot(routes) will be loaded.
 
 @NgModule({
   declarations: [

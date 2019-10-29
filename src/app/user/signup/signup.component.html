@@ -22,31 +22,59 @@
                 </div>
 
                 <div class="form-group">
-                        <label for="mobile">Enter Contact Number</label>
+                    <label for="country">Country</label>
+                    <select name="country" [(ngModel)]="countryCode" class="form-control" (change)='onCountrySelected($event.target.value)' required>
+                        <option [ngValue]="undefined" disabled selected>Please select country</option>
+
+                        <option *ngFor="let data of countries" [value]="data.countryCode" >{{data.country}}</option>
+                    </select>
+                </div>
+               
+
+                <div class="form-group">
+                    <label for="mobile">Enter Contact Number</label>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <select name="countryPhoneCode" [(ngModel)]="countryCode" class="form-control width-control" >
+                                
+                                <option *ngFor="let data of countryCodes" [value]="data.countryCode">{{data.code}}</option>
+                            </select>
+                        </div>
+                        
                         <input type="tel" name="mobile" [(ngModel)]="mobile" #phone="ngModel" class="form-control" maxlength="10" placeholder="Enter 10 digit Mobile Number" pattern="[789][0-9]{9}" required>
                     </div>
-
-                    <div class="form-group">
-                            <label for="email">Enter Email</label>
-                            <input type="email" #mail="ngModel" name="email" [(ngModel)]="email" class="form-control" placeholder="someone@example.com" required>
-                        </div>
-                    <div [hidden]="mail.valid||mail.pristine" class="alert alert-danger h6">
-                                e-mail is required.
-                        </div>
-
-                    <div class="form-group">
-                            <label for="password">Enter Password</label>
-                            <input type="password" #pass="ngModel" name="password" [(ngModel)]="password" class="form-control" placeholder="8-15 Alphanumeric Characters" pattern="^([a-zA-Z0-9@*#]{8,15})$" required>
-                        </div>
                     
-                    <div class="form-group">
-                        <label for="gender">Gender</label>
-                        <select name="gender" [(ngModel)]="gender" class="form-control"  required>
-                            <option [ngValue]="undefined" disabled selected>Please select a Category</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Enter Email</label>
+                    <input type="email" #mail="ngModel" name="email" [(ngModel)]="email" class="form-control" placeholder="someone@example.com" required>
+                </div>
+                <div [hidden]="mail.valid||mail.pristine" class="alert alert-danger h6">
+                        e-mail is required.
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Enter Password</label>
+                    <input type="password" #pass="ngModel" name="password" [(ngModel)]="password" class="form-control" placeholder="8-15 Alphanumeric Characters" pattern="^([a-zA-Z0-9@*#]{8,15})$" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select name="gender" [(ngModel)]="gender" class="form-control"  required>
+                        <option [ngValue]="undefined" disabled selected>Please select a Category</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+
+                    <!-- <div class="form-group">
+                        <ng-multiselect-dropdown [placeholder]="'Select Country'" [data]="countries"
+                            [(ngModel)]="selectedCountry" [settings]="countryListSettings"
+                            [ngModelOptions]="{standalone: true}">
+                        </ng-multiselect-dropdown>
+                    </div> -->
 
                     <div class="form-group">
                         <!-- <app-profile-img></app-profile-img> -->

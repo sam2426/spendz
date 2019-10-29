@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { CookieService } from 'ngx-cookie-service';
 import { AppService } from './../../services/app.service';
 import { Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown'; //https://www.npmjs.com/package/ng-multiselect-dropdown
@@ -28,67 +29,69 @@ export class SignupComponent implements OnInit {
   public picUrl:any='';
   public showLoader:boolean=false;
 
-  public countries:any;
-  public countryCodes:any;
-  public countryListSettings:IDropdownSettings = {};
-  public countryCodeListSettings:IDropdownSettings = {};
-  CountryList: any;
-  countryCodeList: any;
 
+  public countries:any[]; //it has the full array of the list of countries with countryCode
+  public countryCodes:any[]; // it has the full array of the list of country phone code with countryCode
+  public country:any; // one selected country from dropdown
+  public countryCode:any; // that one selected country code to match between country and country phone code
+  public countryPhoneCode:any; //that one selected country phone code to according to country selected.
+  
   constructor(
+    public cookieService: CookieService,
     public toastr:ToastrService,
     public appService:AppService,
     public router:Router,
   ) { }
 
   ngOnInit() {
+    if (!(this.cookieService.get('authToken')=='')) {
+      this.router.navigate(['/user-home/', this.cookieService.get('userId')]);
+    }else{
+      this.router.navigate(['/signup']);
+    }
     this.getCountries();
     this.getCountryCodes();
-
   }
 
-  public getCountries(){
-    this.appService.getCountries().subscribe(data=>{
-      this.countries=data;
-      console.log(this.countries);
+  public onCountrySelected(value){
+    // this.countryCode=value;
+    let CountryElement=this.countries.find(obj=>obj.countryCode===value);
+    this.country=CountryElement.country;
+
+    let CountryPhoneElement=this.countryCodes.find(obj=>obj.countryCode===value);
+    this.countryPhoneCode=CountryPhoneElement.code;
+    // console.log('value emmitted is ',value);
+    // console.log('country:',this.country);
+    // console.log('countryCode',this.countryCode);
+    // console.log('countryPhoneCode',this.countryPhoneCode);
+    
+  }
+
+  public getCountries() {
+    let arr: any[] = [];
+    this.appService.getCountries().subscribe(data => {
+      for (const [key, value] of Object.entries(data)) {
+        let cd = { 'countryCode': key, 'country': value }
+        arr.push(cd);
+      }
+      this.countries=arr;
+      // console.log(this.countries);
     })
   }
 
-  public getCountryCodes(){
-    this.appService.getCountryCodes().subscribe(data=>{
-      this.countryCodes=data;
-      console.log(this.countryCodes);
+  public getCountryCodes() {
+    let arr: any[] = [];
+    this.appService.getCountryCodes().subscribe(data => {
+      for (const [key, value] of Object.entries(data)) {
+        let cd = { 'countryCode': key, 'code': value }
+        arr.push(cd);
+      }
+      this.countryCodes=arr;
+      // console.log(this.countryCodes);
     })
   }
 
-  public loadCountry(){
-
-    console.log("grp loader",this.countries);
   
-    this.CountryList=this.countries;
-    this.countryListSettings = {
-      singleSelection: true,
-      idField: 'userId',
-      textField: 'firstName',
-      allowSearchFilter: true,
-      maxHeight:100,
-    };
-  }
-
-  public loadUsers(){
-
-    console.log("grp loader",this.countryCodes);
-  
-    this.countryCodeList=this.countryCodes;
-    this.countryCodeListSettings = {
-      singleSelection: true,
-      idField: 'userId',
-      textField: 'firstName',
-      allowSearchFilter: true,
-      maxHeight:100,
-    };
-  }
-
   public imageTarget:String='';
   public selectedFile:ImageSnippet;// ImageSnippet-a custom class to store image data.
 
@@ -127,34 +130,35 @@ export class SignupComponent implements OnInit {
        })
      }
  
-     let signUp: any=()=> {
-       return new Promise((resolve,reject)=>{
-           let data={
-             firstName:this.firstName,
-             lastName:this.lastName,
-             mobile:this.mobile,
-             email:this.email,
-             password:this.password,
-             gender:this.gender,
-             profilePic:this.picUrl,
-            }
-           console.log(data);
-         
-             this.appService.signupFunction(data).subscribe((apiResponse)=>{ 
-             console.log(apiResponse);
-     
-             if (apiResponse.status===200){
-               resolve(apiResponse);
-             }
-             else{
-               reject();
-             }
-           },
-           (err)=>{
-             reject();
-           });
-         }) 
-     }
+    let signUp: any = () => {
+      return new Promise((resolve, reject) => {
+        let data = {
+          firstName: this.firstName,
+          lastName: this.lastName,
+          mobile: this.countryPhoneCode + " " + this.mobile,
+          email: this.email,
+          password: this.password,
+          gender: this.gender,
+          profilePic: this.picUrl,
+          country: this.country
+        }
+        console.log(data);
+
+        this.appService.signupFunction(data).subscribe((apiResponse) => {
+          console.log(apiResponse);
+
+          if (apiResponse.status === 200) {
+            resolve(apiResponse);
+          }
+          else {
+            reject();
+          }
+        },
+          (err) => {
+            reject();
+          });
+      })
+    }
      
      if(!this.firstName){
        this.toastr.warning('enter first name');

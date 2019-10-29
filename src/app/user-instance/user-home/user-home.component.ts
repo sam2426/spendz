@@ -29,9 +29,11 @@ export class UserHomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    
     // this.authToken=this.cookies.get('authToken');
     this.loggedInId = this.cookies.get('userId');
     this.userInfo = this.appService.getUserInfoFromLocalStorage();
+
     //getting the user id from the route, here snapshot method didn't work so used observable to get the 
     //refreshed user id dynamically. snapshot is kind of static
     this._route.paramMap.subscribe((params) => {
@@ -41,8 +43,12 @@ export class UserHomeComponent implements OnInit {
       console.log('call friend list');
       this.getFriendList(this.userId);
     })
+
+    //we need to initiate all the listeners, then only it will be active to listen to sockets,
+    //socket.emit can be fired on button clicks or some other events
     this.receiveRequest(this.loggedInId);
     this.deleteRequest(this.loggedInId);
+    this.acceptRequest(this.loggedInId);
     this.getFriendList(this.loggedInId);
     this.getAllUsersList(this.loggedInId);
   }
@@ -57,7 +63,7 @@ export class UserHomeComponent implements OnInit {
     })
   }
 
-  public getProfile: any = (userId) => {
+  public getProfile: any = (userId) => {                          //to get the details of the the user. here real time not needed.
     this.appService.getSingleUser(userId).subscribe((apiResponse) => {
       console.log(apiResponse);
       if (apiResponse.status === 200) {
@@ -82,12 +88,11 @@ export class UserHomeComponent implements OnInit {
         this.userList = this.parseFriendList(apiResponse.data)
       }else if(apiResponse.status===300){
         this.userList=[];
-        this.toastr.error('No more users to show');
       }
       else {
         this.toastr.error('some error occured');
       }
-      console.log(this.userList);
+      // console.log(this.userList);
     })
   }
 
@@ -118,27 +123,19 @@ export class UserHomeComponent implements OnInit {
         }
       }
     }
-    console.log(newArr);
+    // console.log(newArr);
       return newArr;
   }
 
 
-  public unfriend=(friendId)=>{                            //it wil fire the socket when button is clicked.
-    
+  public unfriend=(friendId)=>{  
+                              //it wil fire the socket when unfriend button is clicked.
     this.friendSocketService.deleteFriendRequest(this.loggedInId,friendId);
-    // .subscribe((apiResponse) => {
-    //   if (apiResponse.status === 200) {
-    //     this.getFriendList(this.userId);
-    //     this.toastr.success('Request Processed');
-    //   }
-    //   else {
-    //     this.toastr.warning('Error');
-    //   }
-    // })
+
   }
 
   public deleteRequest=(userId)=>{                            //it wil update the list when someone deletes an sent request 
-    console.log("deleteActionRequest activated for ",userId)
+    // console.log("deleteActionRequest activated for ",userId)
     this.friendSocketService.deleteRequestNotify(userId).subscribe((data)=>{
       this.toastr.success('Friend Request Deleted');
       this.getFriendList(this.loggedInId);
@@ -146,18 +143,10 @@ export class UserHomeComponent implements OnInit {
     })
   }
 
-  public acceptReq=(friendId)=>{                                //it wil fire the delete socket when button is clicked.
+  public acceptReq=(friendId)=>{                                //it wil fire the delete socket when unfriend/decline button is clicked.
 
     this.friendSocketService.acceptFriendRequest(this.loggedInId,friendId);
-    // this.appService.acceptReq(this.userId,friendId).subscribe((apiResponse) => {
-    //   if (apiResponse.status === 200) {
-    //     this.getFriendList(this.userId);
-    //     this.toastr.success('Request Accepted');
-    //   }
-    //   else {
-    //     this.toastr.warning('Error');
-    //   }
-    // })
+  
   }
 
 
@@ -170,31 +159,6 @@ export class UserHomeComponent implements OnInit {
     })
   }
 
-  // public unfriend=(friendId)=>{
-  //   this.appService.deleteReq(this.userId,friendId).subscribe((apiResponse) => {
-  //     if (apiResponse.status === 200) {
-  //       this.getFriendList(this.userId);
-  //       this.toastr.success('Request Processed');
-  //     }
-  //     else {
-  //       this.toastr.warning('Error');
-  //     }
-  //   })
-  // }
-
-
-
-  // public getFriendList: any = (userId) => {
-  //   this.friendSocketService.friendList().subscribe((apiResponse) => {
-  //     if (apiResponse.status === 200) {
-  //       console.log(apiResponse.data);
-  //       this.userList = this.parseFriendList(apiResponse.data)
-  //     }
-  //     else {
-  //       this.toastr.warning('No friends to list');
-  //     }
-  //     console.log(this.userList);
-  //   })
-  // }
+  
 
 }

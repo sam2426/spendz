@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../../services/app.service';
 import { ToastrService } from 'ngx-toastr';
+import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
@@ -17,12 +18,18 @@ export class ForgetPasswordComponent implements OnInit {
   public showLoader:boolean=false;
 
   constructor(
+    public cookieService: CookieService,
     public appService: AppService,
     public toastr:ToastrService,
     public router:Router,
   ) { }
 
   ngOnInit() {
+    if (!(this.cookieService.get('authToken')=='')) {
+      this.router.navigate(['/user-home/', this.cookieService.get('userId')]);
+    }else{
+      this.router.navigate(['/forget_password']);
+    }
   }
 
   public sendValidator:any=()=>{

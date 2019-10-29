@@ -63,7 +63,7 @@ export class UserFriendsComponent implements OnInit {
   }
 
   public receiveRequest=(userId)=>{                             //it will update the list when someone sends request in real time
-    console.log("receiveFriendRequest activated for ",userId)
+    // console.log("receiveFriendRequest activated for ",userId)
     this.friendSocketService.receiveFriendRequest(userId).subscribe((data)=>{
       this.toastr.success('Friend Request Received');
       this.getUserList(this.userId);
