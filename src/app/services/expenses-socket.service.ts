@@ -11,11 +11,12 @@ import { CookieService } from 'ngx-cookie-service';
 
 export class ExpensesSocketService {
 
-  private url = 'http://localhost:3000/group';
+  private url = 'http://api.anglrapp.site/group';
+  // private url = "http://localhost:3000/group";
   private socket;
 
   constructor(public http:HttpClient, public cookie:CookieService) { 
-    this.socket=io(this.url); // connection is being created. i.e the handshake is happening here.
+    this.socket=io(this.url,{ transports: ['websocket'] }); // connection is being created. i.e the handshake is happening here.
     console.log("group socket connected");
   }
 

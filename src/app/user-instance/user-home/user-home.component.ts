@@ -13,7 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class UserHomeComponent implements OnInit {
 
   public currentUser;
-  public userData={};
+  public userData:any={};
   public loggedInId = '';
   public userId = '';
   public userList: any = [];

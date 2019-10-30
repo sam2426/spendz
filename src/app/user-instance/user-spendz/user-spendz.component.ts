@@ -153,6 +153,7 @@ export class UserSpendzComponent implements OnInit {
 
   //create group logic starts
   public addGroup=()=>{
+    console.log('create group');
     let finalArray = this.friendSelectedItems.map(obj=>obj.userId); //getting the ids from the selected contributors.
     finalArray.push(this.userId);
     let data={

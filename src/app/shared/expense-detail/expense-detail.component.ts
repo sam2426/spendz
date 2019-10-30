@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ExpenseDetailComponent implements OnInit {
 
   @Input() accordionId:string;
-  @Input() cardHeader:string;
+  @Input() cardHeader:any;
 
   public isHidden:boolean=true;
 

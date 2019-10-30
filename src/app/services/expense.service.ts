@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 })
 export class ExpenseService {
 
-  private url = "http://localhost:3000/api/v1";
+  private url = "http://api.anglrapp.site/api/v1";
+  // private url = "http://localhost:3000/api/v1";
 
   constructor(public http: HttpClient, public cookies:CookieService) { }
 

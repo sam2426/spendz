@@ -12,7 +12,8 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class FriendListSocketService {
 
-  private url = 'http://localhost:3000/';
+  private url = 'http://api.anglrapp.site/';
+  // private url = "http://localhost:3000/";
   private socket;
 
   constructor(public http:HttpClient, public cookie:CookieService) { 
