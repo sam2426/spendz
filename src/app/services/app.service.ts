@@ -8,8 +8,8 @@ import { Observable } from 'rxjs';
 })
 export class AppService {
 
-  private url = "http://api.anglrapp.site/api/v1";
-  // private url = "http://localhost:3000/api/v1";
+  // private url = "http://api.anglrapp.site/api/v1";
+  private url = "http://localhost:3000/api/v1";
 
   constructor(public http: HttpClient, public cookies:CookieService) { }
 
@@ -77,13 +77,13 @@ export class AppService {
     return this.http.post(`${this.url}/users/logout`, params);
   } // end logout function
 
-  // public userList(userId):Observable<any>{
-  //   return this.http.get(`${this.url}/users/${userId}/allUsers`);
-  //  }
+  public userList(userId):Observable<any>{
+    return this.http.get(`${this.url}/users/${userId}/allUsers`);
+   }
  
-  //  public friendList(userId):Observable<any>{
-  //    return this.http.get(`${this.url}/users/${userId}/allFriends`);
-  //   }
+   public friendList(userId):Observable<any>{
+     return this.http.get(`${this.url}/users/${userId}/allFriends`);
+    }
  
    public getSingleUser(userId):Observable<any>{
      //passing the id for which data is needed.

@@ -4,15 +4,15 @@ import { Observable } from 'rxjs';
 import { HttpClient,HttpErrorResponse } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 
-@Injectable({
-  providedIn: 'root'
-})
-
+@Injectable()
+// {
+//   providedIn: 'root'
+// }
 
 export class ExpensesSocketService {
 
-  private url = 'http://api.anglrapp.site/group';
-  // private url = "http://localhost:3000/group";
+  // private url = 'http://api.anglrapp.site/group';
+  private url = "http://localhost:3000/group";
   private socket;
 
   constructor(public http:HttpClient, public cookie:CookieService) { 

@@ -6,7 +6,7 @@ import { FriendListSocketService } from './../../services/friend-list-socket.ser
 import { ExpensesSocketService } from './../../services/expenses-socket.service';
 // import { FormBuilder, FormGroup } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown'; //https://www.npmjs.com/package/ng-multiselect-dropdown
-import { NgForm } from '@angular/forms';
+// import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-user-spendz',
@@ -38,7 +38,7 @@ export class UserSpendzComponent implements OnInit {
   
 
 
-  public numdun:any[]=[       //  this is format in which data has to be fed to IDropDownList
+  public numdun:any[]=[       //  this is format in which data has to be fed to expense showing component
     {head:"abc", tail:"cba"},
     {head:"cde", tail:"edc"},
     {head:"fgh", tail:"hgf"}
@@ -105,24 +105,24 @@ export class UserSpendzComponent implements OnInit {
 
   public getFriendListEmitter:any=(userId)=>{
     console.log(userId);
-    this.friendSocketService.getfriendList(userId);
+    // this.friendSocketService.getfriendList(userId);
   }
 
   public getFriendsListener:any=(userId)=>{
-    this.friendSocketService.friendList(userId).subscribe((apiResponse)=>{
-      if(apiResponse.status===200){
-        console.log("hijjbill",apiResponse.data);
-        // this.friendsList = this.parseFriendList(apiResponse.data);
-        this.contributors=this.parseFriendList(apiResponse.data);
-      }else if(apiResponse.status===300){
-        // this.friendsList=[];
-        this.contributors=[] //remove friendList as whole and just put contributors. when idea confirmed.
-      }
-      else {
-        this.toastr.error('some error occured');
-      }
-      // console.log(this.userList);
-    })
+    // this.friendSocketService.friendList(userId).subscribe((apiResponse)=>{
+    //   if(apiResponse.status===200){
+    //     console.log("hijjbill",apiResponse.data);
+    //     // this.friendsList = this.parseFriendList(apiResponse.data);
+    //     this.contributors=this.parseFriendList(apiResponse.data);
+    //   }else if(apiResponse.status===300){
+    //     // this.friendsList=[];
+    //     this.contributors=[] //remove friendList as whole and just put contributors. when idea confirmed.
+    //   }
+    //   else {
+    //     this.toastr.error('some error occured');
+    //   }
+    //   // console.log(this.userList);
+    // })
   }
 
   public parseFriendList: any = (userFriendData) => {
