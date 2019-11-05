@@ -17,15 +17,15 @@ export class FriendListSocketService {
   private socket;
 
   constructor(public http:HttpClient, public cookie:CookieService) { 
-    let data={user:cookie.get('userId')}
+    // let data={user:cookie.get('userId')}
     this.socket=io(this.url); // connection is being created. i.e the handshake is happening here.
-    this.socket.emit('join', data);
+    // this.socket.emit('join', data);
     console.log("socket connected",data);
   }
 
   public listReload=(userId)=>{
     return Observable.create((observer)=>{
-      this.socket.on('userResponse',(data)=>{
+      this.socket.on(userId,(data)=>{
         observer.next(data);
       })
     })
